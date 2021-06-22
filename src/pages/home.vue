@@ -101,8 +101,8 @@ export default {
   watch: {
     $route(to, from) {
       // to表示的是你要去的那个组件，from 表示的是你从哪个组件过来的，它们是两个对象，你可以把它打印出来，它们也有一个param 属性
-      console.log(from);
-      console.log(to);
+      // console.log(from);
+      // console.log(to);
       this.dynamicSegment = to.params.id;
     },
   },
@@ -119,17 +119,19 @@ export default {
       }
       if ("工作动态" == aimtext) {
         // this.$router.push({name:'dynamicwork',params:{id:123}})
-        this.$router.push("/dynamicwork");
+        this.$router.push("/Dynamicwork");
       }
       if ("干教资讯" == aimtext) {
         // this.$router.push({name:'dryteachinginformation',params:{id:123}})
-        this.$router.push("/dryteachinginformation");
+        this.$router.push("/Dryteachinginformation");
       }
       if ("全部课程" == aimtext) {
+         
       }
       if ("所有培训班" == aimtext) {
       }
       if ("全部考试" == aimtext) {
+        this.$router.push("/Alltest");
       }
       if ("课程记录" == aimtext) {
       }

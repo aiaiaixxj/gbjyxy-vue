@@ -2,15 +2,12 @@
   <div>
     <!-- 刷新页面后的顶部提示框 -->
     <div class="tips" v-if="tipShow" :class="{ 'tips-ani': true }">
-      为您更新了10条最新新闻动态
+      为您更新了20条最新新闻动态
     </div>
-
-    <!-- 基于 uni-list 的页面布局 -->
-
-    <!-- to属性：将新闻ID和标题传给详情页 -->
-    <!-- TODO：需增加日期格式化的示例 -->
-    <!-- to 属性携带参数跳转详情页面，当前只为参考 -->
     <scroller :on-refresh="refresh" :on-infinite="infinite" ref="myscroller">
+      <div>
+        <input type="button" value="返回" @click="back" />
+      </div>
       <div
         direction="row"
         v-for="(item, index) in resdata"
@@ -35,11 +32,11 @@
             :class="dynamicTitleClass[index]"
             style="display: flex; flex-direction: column; border: 2px solid red"
           >
-            <router-link
+            <!-- <router-link
               active-class="RouteLinkStyle"
               :to="{ name: 'home', params: { id: item.id } }"
               style=""
-            >
+            > -->
               <div
                 class=""
                 style="
@@ -54,8 +51,8 @@
               >
                 {{ item.title }}
               </div>
-            </router-link>
-            <div class="" style="margin: 10px;">
+            <!-- </router-link> -->
+            <div class="" style="margin: 10px">
               {{ item.date }}
             </div>
           </div>
@@ -89,9 +86,32 @@ export default {
   mounted() {
     console.log("Announcements is show!");
     this.getData();
+    document.addEventListener("visibilitychange", this.handleVisiable);
   },
-
+  destroyed() {
+    document.removeEventListener("visibilitychange", this.handleVisiable);
+  },
   methods: {
+     canvas() {
+      //画布背景
+      var root = document.querySelector("#root");
+      var a = new CanvasAnimate(root, {
+        length: 15,
+        clicked: false,
+        moveon: true
+      });
+      a.Run();
+    },
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
+    handleVisiable(e) {
+      console.log("e===>>", e);
+      // 监听页面离开事件
+      if (e.target.visibilityState === "visible") {
+        console.log("ssssss");
+      }
+    },
     load(data, ended) {
       // if (ended) {
       // 	this.formData.status = 'noMore'
@@ -137,6 +157,12 @@ export default {
       console.log("okoko");
       if (this.hasMoreData) {
         this.getData();
+        this.tipShow = true;
+        var timeline = setTimeout(() => {
+          this.tipShow = false;
+        }, 1000); //setTimeout 1000ms后执行1次
+        console.log("timeline==>", timeline);
+        // clearTimeout(timeline); //清除Timeout的定时器,传入id(创建定时器时会返回一个id)
       }
       this.$refs.myscroller.finishInfinite(true);
       // if (this.noData) {
@@ -204,6 +230,8 @@ export default {
   opacity: 0;
   transform: translateY(-100%);
   transition: all 0.3s;
+  position: relative;
+  z-index: 999;
 }
 .img-title-box {
   background-color: lightgray;

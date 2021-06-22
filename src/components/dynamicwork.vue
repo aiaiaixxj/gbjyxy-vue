@@ -11,6 +11,9 @@
     <!-- TODO：需增加日期格式化的示例 -->
     <!-- to 属性携带参数跳转详情页面，当前只为参考 -->
     <scroller :on-refresh="refresh" :on-infinite="infinite" ref="myscroller">
+       <div>
+        <input type="button" value="返回" @click="back" />
+      </div>
       <div
         direction="row"
         v-for="(item, index) in resdata"
@@ -36,7 +39,7 @@
             :class="dynamicTitleClass[index]"
             style="display: flex; flex-direction: column; border: 2px solid red"
           >
-            <router-link :to="{ name: 'home', params: { id: item.id } }" style="text-decoration: none;color:black">
+            <!-- <router-link :to="{ name: 'home', params: { id: item.id } }" style="text-decoration: none;color:black"> -->
               <div
                 class=""
                 style="
@@ -51,7 +54,7 @@
               >
                 {{ item.title }}
               </div>
-            </router-link>
+            <!-- </router-link> -->
             <div class="" style="margin: 10px;">
               {{ item.date }}
             </div>
@@ -89,6 +92,9 @@ export default {
   },
 
   methods: {
+     back() {
+      this.$router.go(-1); //返回上一层
+    },
     load(data, ended) {
       // if (ended) {
       // 	this.formData.status = 'noMore'
